@@ -60,3 +60,7 @@ def collect_urls_alt(base='https://www.vox.com/2014/10/18/7000531/vox-sentences/
 if __name__ == "__main__":
     urls = collect_urls()
     print(len(urls))
+    out = open('urls.txt', 'w')
+    for url in urls:
+        out.write(url + '\n')
+    out.close()
