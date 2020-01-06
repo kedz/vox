@@ -3,7 +3,10 @@ from newspaper import Article
 import tweepy
 
 from lxml import html
+import json
 import requests
+from csv import DictWriter
+from time import sleep
 
 from access import consumer_key, consumer_secret
 
@@ -79,3 +82,27 @@ if __name__ == "__main__":
     #for url in urls:
     #    out.write(url + '\n')
     #out.close()
+    days = [json.loads(line) for line in open('sent-data.jsonl', 'r').readlines()]
+    out = DictWriter(open('tweets.csv', 'w'), fieldnames=['url', 'text'])
+    out.writeheader()
+
+    for day in days:
+        for story in day['stories']:
+            for sent in story['summary']:
+                url = sent['url']
+                
+                if url.startswith('https://twitter.com'):
+                    text = "::error::"
+                    #print(url)
+                    
+                    try:
+                        text = scrape_tweet(url)
+                        #print(text)
+                    except Exception as e:
+                        #print(e)
+                        #print('some kind of problem has occurred!')
+                        continue
+                        
+                    #print()
+
+                    out.writerow({'url': url, 'text': text})
