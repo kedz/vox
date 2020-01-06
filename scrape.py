@@ -1,5 +1,11 @@
 import newspaper
 from newspaper import Article
+import tweepy
+
+from lxml import html
+import requests
+
+from access import consumer_key, consumer_secret
 
 def month_year_urls(m, y):
     base = 'https://www.vox.com/archives/vox-sentences/'
@@ -57,10 +63,19 @@ def collect_urls_alt(base='https://www.vox.com/2014/10/18/7000531/vox-sentences/
     #return list(set(urls))
     return urls
 
+def scrape_tweet(url):
+    r = requests.get(url)
+    return html.fromstring(r.content).xpath('//div[contains(@class, "permalink-tweet-container")]//p[contains(@class, "tweet-text")]//text()')[0]
+
+def scrape_thread(url):
+    #auth = tweepy.AppAuthHandler(consumer_key, consumer_secret)
+    #api = tweepy.API(auth)
+    pass
+
 if __name__ == "__main__":
-    urls = collect_urls()
-    print(len(urls))
-    out = open('urls.txt', 'w')
-    for url in urls:
-        out.write(url + '\n')
-    out.close()
+    #urls = collect_urls()
+    #print(len(urls))
+    #out = open('urls.txt', 'w')
+    #for url in urls:
+    #    out.write(url + '\n')
+    #out.close()
