@@ -1,3 +1,6 @@
+# Data files
+data/
+
 # Private files
 access.py
 
